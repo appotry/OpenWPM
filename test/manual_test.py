@@ -29,7 +29,7 @@ from selenium.webdriver.common.keys import Keys  # noqa isort:skip
 OPENWPM_LOG_PREFIX = "console.log: openwpm: "
 INSERT_PREFIX = "Array"
 BASE_DIR = dirname(dirname(realpath(__file__)))
-EXT_PATH = join(BASE_DIR, "Extension", "firefox")
+EXT_PATH = join(BASE_DIR, "Extension")
 
 
 class Logger:
@@ -64,6 +64,7 @@ def get_command_output(command, cwd=None):
     popen = subprocess.Popen(
         command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=cwd
     )
+    assert popen.stdout is not None
     return iter(popen.stdout.readline, b"")
 
 
@@ -207,7 +208,6 @@ def start_webext():
     absolute path or a path relative to the test directory.""",
 )
 def main(selenium, no_extension, browser_params, browser_params_file):
-
     if selenium:
         driver = start_webdriver(  # noqa
             with_extension=not no_extension,
@@ -227,4 +227,4 @@ def main(selenium, no_extension, browser_params, browser_params_file):
 
 
 if __name__ == "__main__":
-    main()
+    main()  # type: ignore
